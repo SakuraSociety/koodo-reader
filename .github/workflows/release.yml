@@ -31,6 +31,8 @@ jobs:
         run: echo "USE_HARD_LINKS=false" >> $GITHUB_ENV
       - name: Build/release Electron app
         run: |
+          npm i yarn -g
+          yarn
           yarn prerelease
           yarn release
       - name: upload exe
