@@ -9,8 +9,6 @@ import { backup } from '../../utils/syncUtils/backupUtil'
 import { isElectron } from 'react-device-detect'
 import { syncData } from '../../utils/syncUtils/common'
 import toast from 'react-hot-toast'
-import { Trans } from 'react-i18next'
-import packageInfo from '../../../package.json'
 
 class Header extends React.Component<HeaderProps, HeaderState> {
   constructor(props: HeaderProps) {
