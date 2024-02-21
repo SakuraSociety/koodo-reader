@@ -103,7 +103,8 @@
       "edge-tts.js"
     ],
     "directories": {
-      "buildResources": "assets"
+      "buildResources": "assets",
+      "output": "build"
     },
     "publish": {
       "provider": "github",

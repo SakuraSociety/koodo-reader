@@ -1,16 +1,16 @@
-import React from "react";
-import "./sidebar.css";
-import { sideMenu } from "../../constants/sideMenu";
-import { SidebarProps, SidebarState } from "./interface";
-import { withRouter } from "react-router-dom";
-import StorageUtil from "../../utils/serviceUtils/storageUtil";
-import { openExternalUrl } from "../../utils/serviceUtils/urlUtil";
-import ShelfUtil from "../../utils/readUtils/shelfUtil";
-import DeletePopup from "../../components/dialogs/deletePopup";
-import { Trans } from "react-i18next";
+import React from 'react'
+import './sidebar.css'
+import { sideMenu } from '../../constants/sideMenu'
+import { SidebarProps, SidebarState } from './interface'
+import { withRouter } from 'react-router-dom'
+import StorageUtil from '../../utils/serviceUtils/storageUtil'
+import { openExternalUrl } from '../../utils/serviceUtils/urlUtil'
+import ShelfUtil from '../../utils/readUtils/shelfUtil'
+import DeletePopup from '../../components/dialogs/deletePopup'
+import { Trans } from 'react-i18next'
 class Sidebar extends React.Component<SidebarProps, SidebarState> {
   constructor(props: SidebarProps) {
-    super(props);
+    super(props)
     this.state = {
       index: 0,
       hoverIndex: -1,
@@ -19,53 +19,53 @@ class Sidebar extends React.Component<SidebarProps, SidebarState> {
       isOpenDelete: false,
       shelfIndex: 0,
       isCollapsed:
-        StorageUtil.getReaderConfig("isCollapsed") === "yes" || false,
-    };
+        StorageUtil.getReaderConfig('isCollapsed') === 'yes' || false,
+    }
   }
   componentDidMount() {
     this.props.handleMode(
-      document.URL.split("/").reverse()[0] === "empty"
-        ? "home"
-        : document.URL.split("/").reverse()[0]
-    );
+      document.URL.split('/').reverse()[0] === 'empty'
+        ? 'home'
+        : document.URL.split('/').reverse()[0]
+    )
   }
   handleSidebar = (mode: string, index: number) => {
-    this.setState({ index: index });
-    this.props.handleSelectBook(false);
-    this.props.history.push(`/manager/${mode}`);
-    this.props.handleMode(mode);
-    this.props.handleShelfIndex(-1);
-    this.props.handleSearch(false);
-    this.props.handleSortDisplay(false);
-  };
+    this.setState({ index: index })
+    this.props.handleSelectBook(false)
+    this.props.history.push(`/manager/${mode}`)
+    this.props.handleMode(mode)
+    this.props.handleShelfIndex(-1)
+    this.props.handleSearch(false)
+    this.props.handleSortDisplay(false)
+  }
   handleHover = (index: number) => {
-    this.setState({ hoverIndex: index });
-  };
+    this.setState({ hoverIndex: index })
+  }
   handleShelfHover = (index: number) => {
-    this.setState({ hoverShelfIndex: index });
-  };
+    this.setState({ hoverShelfIndex: index })
+  }
   handleCollapse = (isCollapsed: boolean) => {
-    this.setState({ isCollapsed });
-    this.props.handleCollapse(isCollapsed);
-    StorageUtil.setReaderConfig("isCollapsed", isCollapsed ? "yes" : "no");
-  };
+    this.setState({ isCollapsed })
+    this.props.handleCollapse(isCollapsed)
+    StorageUtil.setReaderConfig('isCollapsed', isCollapsed ? 'yes' : 'no')
+  }
   handleJump = (url: string) => {
-    openExternalUrl(url);
-  };
+    openExternalUrl(url)
+  }
   handleDeleteShelf = () => {
-    if (this.state.shelfIndex < 1) return;
-    let shelfTitles = Object.keys(ShelfUtil.getShelf());
+    if (this.state.shelfIndex < 1) return
+    let shelfTitles = Object.keys(ShelfUtil.getShelf())
     //获取当前书架名
-    let currentShelfTitle = shelfTitles[this.state.shelfIndex];
-    ShelfUtil.removeShelf(currentShelfTitle);
+    let currentShelfTitle = shelfTitles[this.state.shelfIndex]
+    ShelfUtil.removeShelf(currentShelfTitle)
     this.setState({ shelfIndex: 0 }, () => {
-      this.props.handleShelfIndex(0);
-      this.props.handleMode("shelf");
-    });
-  };
+      this.props.handleShelfIndex(0)
+      this.props.handleMode('shelf')
+    })
+  }
   handleDeletePopup = (isOpenDelete: boolean) => {
-    this.setState({ isOpenDelete });
-  };
+    this.setState({ isOpenDelete })
+  }
   render() {
     const renderSideMenu = () => {
       return sideMenu.map((item, index) => {
@@ -73,23 +73,23 @@ class Sidebar extends React.Component<SidebarProps, SidebarState> {
           <li
             key={item.name}
             className={
-              this.state.index === index && this.props.mode !== "shelf"
-                ? "active side-menu-item"
-                : "side-menu-item"
+              this.state.index === index && this.props.mode !== 'shelf'
+                ? 'active side-menu-item'
+                : 'side-menu-item'
             }
             id={`sidebar-${item.icon}`}
             onClick={() => {
-              this.handleSidebar(item.mode, index);
+              this.handleSidebar(item.mode, index)
             }}
             onMouseEnter={() => {
-              this.handleHover(index);
+              this.handleHover(index)
             }}
             onMouseLeave={() => {
-              this.handleHover(-1);
+              this.handleHover(-1)
             }}
             style={this.props.isCollapsed ? { width: 40, marginLeft: 15 } : {}}
           >
-            {this.state.index === index && this.props.mode !== "shelf" ? (
+            {this.state.index === index && this.props.mode !== 'shelf' ? (
               <div className="side-menu-selector-container"></div>
             ) : null}
             {this.state.hoverIndex === index ? (
@@ -97,24 +97,24 @@ class Sidebar extends React.Component<SidebarProps, SidebarState> {
             ) : null}
             <div
               className={
-                this.state.index === index && this.props.mode !== "shelf"
-                  ? "side-menu-selector active-selector"
-                  : "side-menu-selector "
+                this.state.index === index && this.props.mode !== 'shelf'
+                  ? 'side-menu-selector active-selector'
+                  : 'side-menu-selector '
               }
             >
               <div
                 className="side-menu-icon"
-                style={this.props.isCollapsed ? {} : { marginLeft: "38px" }}
+                style={this.props.isCollapsed ? {} : { marginLeft: '38px' }}
               >
                 <span
                   className={
-                    this.state.index === index && this.props.mode !== "shelf"
+                    this.state.index === index && this.props.mode !== 'shelf'
                       ? `icon-${item.icon}  active-icon`
                       : `icon-${item.icon}`
                   }
                   style={
                     this.props.isCollapsed
-                      ? { position: "relative", marginLeft: "-9px" }
+                      ? { position: 'relative', marginLeft: '-9px' }
                       : {}
                   }
                 ></span>
@@ -123,20 +123,20 @@ class Sidebar extends React.Component<SidebarProps, SidebarState> {
               <span
                 style={
                   this.props.isCollapsed
-                    ? { display: "none", width: "70%" }
-                    : { width: "60%" }
+                    ? { display: 'none', width: '70%' }
+                    : { width: '60%' }
                 }
               >
                 {this.props.t(item.name)}
               </span>
             </div>
           </li>
-        );
-      });
-    };
+        )
+      })
+    }
     const renderSideShelf = () => {
-      let shelfList = ShelfUtil.getShelf();
-      let shelfTitle = Object.keys(shelfList);
+      let shelfList = ShelfUtil.getShelf()
+      let shelfTitle = Object.keys(shelfList)
 
       return shelfTitle.map((item, index) => {
         return (
@@ -144,29 +144,29 @@ class Sidebar extends React.Component<SidebarProps, SidebarState> {
             key={item}
             className={
               this.props.shelfIndex === index
-                ? "active side-menu-item"
-                : "side-menu-item"
+                ? 'active side-menu-item'
+                : 'side-menu-item'
             }
             id={`sidebar-${index}`}
             onClick={() => {
-              this.props.handleShelfIndex(index);
+              this.props.handleShelfIndex(index)
               if (index > 0) {
-                this.props.handleMode("shelf");
+                this.props.handleMode('shelf')
               } else {
-                this.props.handleMode("home");
+                this.props.handleMode('home')
               }
-              this.setState({ index: -1 });
-              this.props.history.push("/manager/shelf");
+              this.setState({ index: -1 })
+              this.props.history.push('/manager/shelf')
             }}
             onMouseEnter={() => {
-              this.handleShelfHover(index);
+              this.handleShelfHover(index)
             }}
             onMouseLeave={() => {
-              this.handleShelfHover(-1);
+              this.handleShelfHover(-1)
             }}
             style={
               index === 0
-                ? { display: "none" }
+                ? { display: 'none' }
                 : this.props.isCollapsed
                 ? { width: 40, marginLeft: 15 }
                 : {}
@@ -181,13 +181,13 @@ class Sidebar extends React.Component<SidebarProps, SidebarState> {
             <div
               className={
                 this.props.shelfIndex === index
-                  ? "side-menu-selector active-selector"
-                  : "side-menu-selector "
+                  ? 'side-menu-selector active-selector'
+                  : 'side-menu-selector '
               }
             >
               <div
                 className="side-menu-icon"
-                style={this.props.isCollapsed ? {} : { marginLeft: "38px" }}
+                style={this.props.isCollapsed ? {} : { marginLeft: '38px' }}
               >
                 <span
                   className={
@@ -197,7 +197,7 @@ class Sidebar extends React.Component<SidebarProps, SidebarState> {
                   }
                   style={
                     this.props.isCollapsed
-                      ? { position: "relative", marginLeft: "-8px" }
+                      ? { position: 'relative', marginLeft: '-8px' }
                       : {}
                   }
                 ></span>
@@ -206,66 +206,50 @@ class Sidebar extends React.Component<SidebarProps, SidebarState> {
               <span
                 style={
                   this.props.isCollapsed
-                    ? { display: "none", width: "70%" }
-                    : { width: "60%" }
+                    ? { display: 'none', width: '70%' }
+                    : { width: '60%' }
                 }
               >
                 {this.props.t(item)}
               </span>
             </div>
           </li>
-        );
-      });
-    };
+        )
+      })
+    }
     const deletePopupProps = {
-      mode: "shelf",
+      mode: 'shelf',
       name: Object.keys(ShelfUtil.getShelf())[this.state.shelfIndex],
-      title: "Delete this shelf",
-      description: "This action will clear and remove this shelf",
+      title: 'Delete this shelf',
+      description: 'This action will clear and remove this shelf',
       handleDeletePopup: this.handleDeletePopup,
       handleDeleteOpearion: this.handleDeleteShelf,
-    };
+    }
     return (
       <>
-        {" "}
+        {' '}
         <div className="sidebar">
           <div
             className="sidebar-list-icon"
             onClick={() => {
-              this.handleCollapse(!this.state.isCollapsed);
+              this.handleCollapse(!this.state.isCollapsed)
             }}
           >
             <span className="icon-menu sidebar-list"></span>
           </div>
-
-          <img
-            src={
-              StorageUtil.getReaderConfig("appSkin") === "night" ||
-              (StorageUtil.getReaderConfig("appSkin") === "system" &&
-                StorageUtil.getReaderConfig("isOSNight") === "yes")
-                ? "./assets/label_light.png"
-                : "./assets/label.png"
-            }
-            alt=""
-            onClick={() => {
-              this.handleJump("https://koodoreader.com");
-            }}
-            style={this.state.isCollapsed ? { display: "none" } : {}}
-            className="logo"
-          />
           <div
             className="side-menu-container-parent"
-            style={this.state.isCollapsed ? { width: "70px" } : {}}
+            style={this.state.isCollapsed ? { width: '70px' } : {}}
           >
             <ul className="side-menu-container">{renderSideMenu()}</ul>
             <div
               className="side-shelf-title-container"
               style={
                 this.state.isCollapsed
-                  ? { display: "none" }
+                  ? { display: 'none' }
                   : this.state.isCollpaseShelf
                   ? {}
-                  : { border: "none" }
+                  : { border: 'none' }
               }
             >
               <div className="side-shelf-title">
@@ -276,11 +260,11 @@ class Sidebar extends React.Component<SidebarProps, SidebarState> {
                 onClick={() => {
                   this.setState({
                     isCollpaseShelf: !this.state.isCollpaseShelf,
-                  });
+                  })
                 }}
                 style={
                   this.state.isCollpaseShelf
-                    ? { transform: "rotate(-90deg)" }
+                    ? { transform: 'rotate(-90deg)' }
                     : {}
                 }
               ></span>
@@ -293,8 +277,8 @@ class Sidebar extends React.Component<SidebarProps, SidebarState> {
         </div>
         {this.state.isOpenDelete && <DeletePopup {...deletePopupProps} />}
       </>
-    );
+    )
   }
 }
 
-export default withRouter(Sidebar as any);
+export default withRouter(Sidebar as any)
